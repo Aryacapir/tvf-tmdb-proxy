@@ -1,19 +1,14 @@
-// api/trending.js
+export default async function handler(req, res) {
+  const { type = 'movie', time = 'day' } = req.query;
 
-module.exports = async (req, res) => {
-  const apiKey = '05458cf40aa30c36be72aafe9d35d95e';
-  const type   = req.query.type || 'movie';   // 'movie' یا 'tv'
-  const time   = req.query.time || 'day';     // 'day' یا 'week'
-  const url    = `https://api.themoviedb.org/3/trending/${type}/${time}?api_key=${apiKey}&language=en-US`;
+  const apiKey = process.env.TMDB_API_KEY;
+  const url = `https://api.themoviedb.org/3/trending/${type}/${time}?api_key=${apiKey}`;
 
   try {
-    const tmdbRes = await fetch(url);
-    if (!tmdbRes.ok) {
-      return res.status(tmdbRes.status).json({ error: `TMDB returned ${tmdbRes.status}` });
-    }
-    const data = await tmdbRes.json();
+    const response = await fetch(url);
+    const data = await response.json();
     res.status(200).json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch data' });
   }
-};
+}
