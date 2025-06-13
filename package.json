@@ -1,5 +1,8 @@
 {
   "name": "tvf-tmdb-proxy",
   "version": "1.0.0",
-  "private": true
+  "private": true,
+  "engines": {
+    "node": "16.x"
+  }
 }
